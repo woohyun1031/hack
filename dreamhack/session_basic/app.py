@@ -57,9 +57,9 @@ def login():
 def admin():
     # developer's note: review below commented code and uncomment it (TODO)
 
-    #session_id = request.cookies.get('sessionid', None)
-    #username = session_storage[session_id]
-    #if username != 'admin':
+    # session_id = request.cookies.get('sessionid', None)
+    # username = session_storage[session_id]
+    # if username != 'admin':
     #    return render_template('index.html')
 
     return session_storage
